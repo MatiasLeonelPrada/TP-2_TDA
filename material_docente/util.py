@@ -10,7 +10,7 @@ RUNS_PER_SIZE = 5
 # Ajustar este valor si se quiere usar más de un proceso para medir los tiempos
 # de ejecución, o None para usar todos los procesadores disponibles. Si se usan
 # varios procesos, tener cuidado con el uso de memoria del sistema.
-MAX_WORKERS = max(1, (os.cpu_count() or 0) // 4)
+MAX_WORKERS = 1
 
 
 def _time_run(algorithm, *args):

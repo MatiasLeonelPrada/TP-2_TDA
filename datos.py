@@ -4,7 +4,7 @@ import os
 if not os.path.exists("datos"):
     os.makedirs("datos")
 
-sample_sizes = [10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 300000, 500000, 1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000]
+sample_sizes = [10, 50, 100, 500, 1000, 5000, 10000] #, 50000, 100000, 300000, 500000, 1000000, 2000000, 3000000, 4000000, 5000000, 6000000, 7000000]
 
 for size in sample_sizes:
     file_path = os.path.join("datos", f"input_{size}.txt")
