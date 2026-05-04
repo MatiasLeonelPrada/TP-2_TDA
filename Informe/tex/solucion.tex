@@ -1,0 +1,43 @@
+\section{Solución propuesta}
+
+
+\begin{figure}[H]
+\centering
+\begin{lstlisting}[style=fileformat]
+Entrenamientos(e,s): 
+
+	Sea N igual al largo de e o s mas 1
+	Sea g una matriz de NxN con todos ceros
+	Sea k un entero iniciado en 0
+	Sea opt un arreglo de largo N inicializado con 0s
+	
+	Por cada i entre 1 a N:
+		Por cada j entre 1 a N:
+			Si i>j: 
+				continuamos 
+			Si j == i:
+				g[i][j]=e[i]
+			Sino:
+				g[i][j]= g[i][j-1] + min(e[j],s[j-i])
+	
+	Por cada i entre 1 a N:
+		Sea opt_k un arreglo de largo N inicializado en 0s
+		Sea mayor_opt un entero inicializado en 0
+			
+		Por cada j entre 1 a i:
+			Si j != i:
+				opt_k[j] = opt[i-j-1]+g[i-j+1][i]
+			Sino:
+				opt_k[j] = g[1][j]
+			
+			Si opt_k[j]>=mayor_opt:
+				mayor_opt = opt_k[j]
+				k=j
+		opt[i] = opt_k[k]
+
+	devolver reconstruccion(opt, k)	
+	
+\end{lstlisting}
+\label{cod:ordenado}
+\caption{Pseudocodigó propuesto para resolver el problema}
+\end{figure}
