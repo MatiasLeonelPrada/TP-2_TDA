@@ -1,0 +1,75 @@
+\section{Algoritmo para encontrar el máximo}
+
+En este trabajo de ejemplo realizaremos el análisis teórico y empírico de diferentes algoritmos que sirven para resolver el mismo problema: obtener el valor del máximo elemento de un arreglo desordenado de $n$ elementos. 
+
+\subsection{Algoritmo Iterativo}
+
+A continuación se muestra el código de solución iterativa del problema. 
+
+\begin{lstlisting}[language=Python]
+def maximo(datos):
+    max_pos = 0
+    for i in range(1, len(datos)):
+        if datos[i] > datos[max_pos]:
+            max_pos = i
+    return datos[max_pos]
+\end{lstlisting}
+
+% Si queremos importar el código directo desde un archivo, podemos hacer lo siguiente: 
+
+% \lstinputlisting[language=Python]{code/maximo_iterativo.py}
+
+% Ventaja: evitamos copiar y pegar, y que si en un momento se modifique el algoritmo (reentrega, o la razón que fuere) no nos tengamos que acordar de esto más allá de compilar. 
+
+% Desventaja: tenemos que asegurarnos de modularizar el código en archivos en función de cómo queremos mostrar el informe. Por otro lado, esto tiene especial sentido si estamos trabajando todo de forma local. Es decir, en el caso que no usemos Overleaf, porque sino implica tener que copiar el código de todas formas. 
+
+% Mencionamos esta alternativa para que sepan que existe, ustedes definen cómo prefieren trabajar con esto. No nos interesa el código del informe, sólo el pdf resultante. 
+
+La complejidad del algoritmo propuesto para encontrar el máximo es $\mathcal{O}(n)$, debido a que para cada elemento del arreglo se realizan operaciones $\mathcal{O}(1)$.
+
+
+\subsection{Algoritmo por División y Conquista}
+
+A continuación, mostramos la implementación de un algoritmo que encuentra el máximo de un arreglo por División y Conquista. Es decir, busca el máximo que corresponde al subarreglo izquierdo, lo mismo para el derecho y se queda con el máximo entre ambos \textit{sub máximos}.
+
+\begin{lstlisting}[language=Python]
+def maximo(datos):
+    if len(datos) == 1:
+        return 0    
+    
+    izq = maximo(datos[:len(datos)//2])
+    der = maximo(datos[len(datos)//2:])
+    return izq if izq > der else der
+\end{lstlisting}
+
+La ecuación de recurrencia que corresponde a este algoritmo es: 
+\begin{equation*} %nota: el asterisco es para que no aparezca el (1) al lado de la ecuación
+    \mathcal{T}(n) = 2 \mathcal{T}\left(\frac{n}{2}\right) + \mathcal{O}(n)
+\end{equation*}
+
+Esto es porque tenemos 2 llamados recursivos, cada lado con la mitad del problema, y al partir hacemos una slice, lo cual en Python realiza una copia, por lo cual demora tiempo lineal en aplicarse en cada caso. 
+
+Aplicando el teorema maestro, la complejidad nos queda en $\mathcal{O}\left(n \log n\right)$. En este caso, nos quedó peor complejidad que en el caso iterativo pura y exclusivamente por abusar del lenguaje de programación sin tomar en cuenta el tiempo que consume hacer un slice. Dejando de hacer esto, podemos mostrar la siguiente versión del algoritmo: 
+
+\begin{lstlisting}[language=Python]
+def maximo(datos):
+    return maximo_dyc(datos, 0, len(datos) - 1)
+
+def maximo_dyc(datos, inicio, fin):
+    if inicio == fin:
+        return datos[inicio]
+
+    medio = (inicio + fin) / 2
+    izq = maximo_dyc(datos, inicio, medio)
+    der = maximo_dyc(datos, medio + 1, fin)
+    return izq if izq > der else der
+\end{lstlisting}
+
+En este caso, la ecuación de recurrencia es: 
+\begin{equation*}
+    \mathcal{T}(n) = 2 \mathcal{T}\left(\frac{n}{2}\right) + \mathcal{O}(1)
+\end{equation*}
+
+Aplicando el teorema maestro, nos queda que la complejidad es $\mathcal{O}\left(n\right)$.
+
+Es importante notar que en otros lenguajes de programación esto podría no ser necesario (por ejemplo, Go). En algunos lenguajes se puede operar usando Slices que consuman $\mathcal{O}(1)$ de tiempo (a cambio de utilizar la misma memoria que el arreglo original), o bien usando aritmética de punteros como puede ser el caso de C. Independientemente del caso, es importante notar que el algoritmo de división y conquista es lógicamente igual (o extremadamente similar), pero tenemos que considerar cuestiones de implementación del lenguaje elegido a la hora de definir las complejidades. 

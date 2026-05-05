@@ -1,0 +1,73 @@
+\section{Solución propuesta}
+
+Luego de lo mencionado anteriormente presentamos un pseudocodigo que muestra la solución propuesta por programación dinámica para este problema
+
+\begin{figure}[H]
+\centering
+\begin{lstlisting}[style=fileformat]
+Entrenamientos(e,s): 
+
+	Sea N igual al largo de e o s mas 1
+	Sea g una matriz de NxN con todos ceros
+	Sea k un entero iniciado en 0
+	Sea opt un arreglo de largo N inicializado con 0s
+	
+	Por cada i entre 1 a N:
+		Por cada j entre 1 a N:
+			Si i>j: 
+				continuamos 
+			Si j == i:
+				g[i][j]=e[i]
+			Sino:
+				g[i][j]= g[i][j-1] + min(e[j],s[j-i])
+	
+	Por cada i entre 1 a N:
+		Sea opt_k un arreglo de largo N inicializado en 0s
+		Sea mayor_opt un entero inicializado en 0
+			
+		Por cada j entre 1 a i:
+			Si j != i:
+				opt_k[j] = opt[i-j-1]+g[i-j+1][i]
+			Sino:
+				opt_k[j] = g[1][j]
+			
+			Si opt_k[j]>=mayor_opt:
+				mayor_opt = opt_k[j]
+				k=j
+		opt[i] = opt_k[k]
+
+	devolver reconstruccion(opt, k)	
+	
+\end{lstlisting}
+\label{cod:ordenado}
+\caption{Pseudocodigó propuesto para resolver el problema}
+\end{figure}
+
+
+Siendo reconstrucción el algoritmo de para obtener la solución, que se vuelve mas simple guardando el ultimo k. Este algoritmo corresponde al siguiente pseudocodigo
+
+\begin{figure}[H]
+\centering
+\begin{lstlisting}[style=fileformat]
+Reconstruccion(opt,k): 
+
+	Sea dia el calculo de len(opt)-1-k
+	Por cada i entre 0 a k
+		
+
+    Sea rec una lista vacia con la solcuion
+    Mientras len(rec) < len(opt):
+         Sea dia igual a len(opt)-1 -k -1
+         Por cada i entre 0 a k
+            agregamos 'E' a rec
+         agregamos 'D' a rec
+         k=dia
+
+    Damos vuelta la lista rec
+    Borramos la primera componente que es la componente 'D' agregada al final
+	Devolvemos rec
+
+\end{lstlisting}
+\label{cod:ordenado}
+\caption{Pseudocodigó propuesto para reconstruir la solucion}
+\end{figure}
